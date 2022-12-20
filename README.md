@@ -8,7 +8,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/superfly/fly-checks/flycheck"
+	"github.com/superfly/fly-checks/check"
 )
 
 func main() {
@@ -17,7 +17,7 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
 
-	suite := flycheck.NewCheckSuite("my-test-function")
+	suite := check.NewCheckSuite("my-test-function")
 
 	// Passing check
 	suite.AddCheck("passing_check", func() (string, error) {
