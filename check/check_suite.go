@@ -29,7 +29,7 @@ func (h *CheckSuite) Process(parentCtx context.Context) {
 	for _, check := range h.Checks {
 		check.Process()
 	}
-	h.executionTime = roundDuration(time.Since(start), 2)
+	h.executionTime = RoundDuration(time.Since(start), 2)
 	h.processed = true
 	h.runOnCompletion()
 	cancel()
@@ -38,7 +38,7 @@ func (h *CheckSuite) Process(parentCtx context.Context) {
 	case <-ctx.Done():
 		// Handle timeout
 		if errors.Is(ctx.Err(), context.DeadlineExceeded) {
-			h.executionTime = roundDuration(time.Since(start), 2)
+			h.executionTime = RoundDuration(time.Since(start), 2)
 			h.processed = true
 			h.runOnCompletion()
 		}
