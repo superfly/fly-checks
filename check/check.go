@@ -35,9 +35,9 @@ func (c *Check) Passed() bool {
 
 func (c *Check) executionTime() time.Duration {
 	if !c.endTime.IsZero() {
-		return roundDuration(c.endTime.Sub(c.startTime), 2)
+		return RoundDuration(c.endTime.Sub(c.startTime), 2)
 	}
-	return roundDuration(time.Now().Sub(c.startTime), 2)
+	return RoundDuration(time.Now().Sub(c.startTime), 2)
 }
 
 func (c *Check) Result() string {
