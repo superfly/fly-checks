@@ -29,6 +29,7 @@ func main() {
 		return "failed", fmt.Errorf("random error")
 	})
 
+	// Check that will fail due to timeout
 	suite.AddCheck("failing_check_due_to_timeout", func() (string, error) {
 		time.Sleep(time.Second)
 		return "failed", fmt.Errorf("random error")
