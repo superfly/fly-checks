@@ -1,4 +1,4 @@
-package flycheck
+package check
 
 import (
 	"context"
