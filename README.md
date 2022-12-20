@@ -44,10 +44,9 @@ func main() {
 		cancel()
 	}()
 
-	select {
-	case <-ctx.Done():
-		fmt.Println(suite.Result())
-	}
+	<-ctx.Done():
+	
+        fmt.Println(suite.Result())
 }
 ```
 
