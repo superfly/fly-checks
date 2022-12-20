@@ -1,6 +1,5 @@
-# fly-checks
-Basic health-check framework
-
+# Fly checks
+Simple health-check framework.
 
 ## Usage
 ```golang
