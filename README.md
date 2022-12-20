@@ -12,6 +12,7 @@ import (
 )
 
 func main() {
+	// Set an optional timeout.
 	timeout := 200 * time.Millisecond
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
@@ -32,6 +33,10 @@ func main() {
 		time.Sleep(time.Second)
 		return "failed", fmt.Errorf("random error")
 	})
+	
+	
+	// Optionally run something on check completion.
+	// suite.OnCompletion = func() {}
 
 	//
 	go func() {
