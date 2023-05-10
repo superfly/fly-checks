@@ -81,5 +81,8 @@ func (c *Check) RawResult() string {
 	if c.Passed() {
 		return c.message
 	}
+	if c.endTime.IsZero() {
+		return "timeout"
+	}
 	return c.err.Error()
 }
