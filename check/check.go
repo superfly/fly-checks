@@ -2,6 +2,7 @@ package check
 
 import (
 	"fmt"
+	"sync"
 	"time"
 )
 
@@ -14,19 +15,32 @@ type Check struct {
 	endTime   time.Time
 	message   string
 	err       error
+	m         sync.RWMutex
 }
 
 func (c *Check) Process() {
+	c.m.Lock()
 	c.startTime = time.Now()
-	c.message, c.err = c.CheckFunc()
+	c.m.Unlock()
+
+	msg, err := c.CheckFunc()
+	c.m.Lock()
+	c.message, c.err = msg, err
 	c.endTime = time.Now()
+	c.m.Unlock()
 }
 
 func (c *Check) Error() string {
+	c.m.RLock()
+	defer c.m.RUnlock()
+
 	return c.err.Error()
 }
 
 func (c *Check) Passed() bool {
+	c.m.RLock()
+	defer c.m.RUnlock()
+
 	if c.startTime.IsZero() || c.endTime.IsZero() {
 		return false
 	}
@@ -34,6 +48,9 @@ func (c *Check) Passed() bool {
 }
 
 func (c *Check) executionTime() time.Duration {
+	c.m.RLock()
+	defer c.m.RUnlock()
+
 	if !c.endTime.IsZero() {
 		return RoundDuration(c.endTime.Sub(c.startTime), 2)
 	}
@@ -41,6 +58,9 @@ func (c *Check) executionTime() time.Duration {
 }
 
 func (c *Check) Result() string {
+	c.m.RLock()
+	defer c.m.RUnlock()
+
 	if c.startTime.IsZero() {
 		return fmt.Sprintf("[-] %s: %s", c.Name, "Not processed")
 	}
@@ -55,6 +75,9 @@ func (c *Check) Result() string {
 }
 
 func (c *Check) RawResult() string {
+	c.m.RLock()
+	defer c.m.RUnlock()
+
 	if c.Passed() {
 		return c.message
 	}
