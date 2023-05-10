@@ -117,6 +117,15 @@ func TestFailureDueToTimeout(t *testing.T) {
 		if suite.Passed() {
 			t.Fatalf("expected suite to fail, but it passed instead.")
 		}
+
+		var e any
+		func() {
+			defer func() { e = recover() }()
+			suite.RawResult()
+		}()
+		if e != nil {
+			t.Fatalf("expected RawResult not to panic: %#v", e)
+		}
 	}
 }
 
